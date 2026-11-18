@@ -57,3 +57,24 @@ def test_check_rejects_missing_tags(tmp_path, evalset_cli):
     result = evalset_cli("--check")
     assert result.returncode == 1, result.stdout + result.stderr
     assert "failure_modes empty" in result.stdout
+
+
+def test_public_evalset_build_is_complete_and_reproducible(tmp_path, evalset_cli):
+    source = Path(__file__).resolve().parents[1] / "data/public_claims.jsonl"
+    claims = [json.loads(line) for line in source.read_text(encoding="utf-8").splitlines()]
+    (tmp_path / "data/public_claims.jsonl").write_bytes(source.read_bytes())
+
+    result = evalset_cli("--build", "--check")
+    assert result.returncode == 0, result.stdout + result.stderr
+    items_path = tmp_path / "data/eval/eval_set_v1.jsonl"
+    first_build = items_path.read_bytes()
+    items = [json.loads(line) for line in first_build.decode().splitlines()]
+    labels = json.loads((tmp_path / "data/eval/labels_v1.json").read_text(encoding="utf-8"))
+
+    assert len(items) == len(claims) == 14
+    assert labels == {claim["claim_id"]: claim["expected"] for claim in claims}
+    assert all(item["failure_modes"] for item in items)
+    assert all("expected" not in item and "label" not in item for item in items)
+    assert all(item["provenance"]["checked_by"] for item in items)
+    assert evalset_cli("--build", "--check").returncode == 0
+    assert items_path.read_bytes() == first_build

@@ -29,13 +29,13 @@ Repo này **không chạy độc lập**: nó chỉ có `src/lab9/`, docs và wo
 **Lab 8 bị khóa, trace cố định.** Không sửa file nào trong `src/lab8/` (trừ 10 điểm). Trace không commit sẵn: `lab9.eval` chạy lại agent bằng MockLLM trên 14 item × 5 seed cố định, nên chạy lần nào cũng ra cùng một trace. Việc của bạn là eval và phân tích dựa trên trace đó: taxonomy, judge calibration, grader, bootstrap gate.
 
 **1. Trên GitHub.** Bấm **Fork** repo này về tài khoản của bạn và đặt tên theo mẫu
-`K5-L3A-DAY09-HoVaTen-MSSV-EvaluationandFailureAnalysis`.
+`K5-L3B-DAY09-HoVaTen-MSSV-EvaluationandFailureAnalysis`.
 Sau đó vào tab **Actions** của bản fork, bấm bật workflow: GitHub tắt sẵn workflow trên repo fork, không bật thì job `eval-gate` không chạy.
 
 **2. Trên máy** (macOS / Linux):
 ```bash
 # Clone bản fork của bạn và repo gốc Day 8 vào cùng một thư mục
-git clone https://github.com/<github-cua-ban>/K5-L3A-DAY09-HoVaTen-MSSV-EvaluationandFailureAnalysis lab9
+git clone https://github.com/<github-cua-ban>/K5-L3B-DAY09-HoVaTen-MSSV-EvaluationandFailureAnalysis lab9
 git clone https://github.com/VinUni-AI20k/K5-Day8-From-Workflows-to-Agents day8-goc
 
 # Tạo nhánh làm bài, chép src/ của Day 8 vào src/ của bản fork.
@@ -55,7 +55,7 @@ cd .. && git add -A && git commit -m "chore: build eval set v1"
 
 Windows (PowerShell), cùng các bước trên:
 ```powershell
-git clone https://github.com/<github-cua-ban>/K5-L3A-DAY09-HoVaTen-MSSV-EvaluationandFailureAnalysis lab9
+git clone https://github.com/<github-cua-ban>/K5-L3B-DAY09-HoVaTen-MSSV-EvaluationandFailureAnalysis lab9
 git clone https://github.com/VinUni-AI20k/K5-Day8-From-Workflows-to-Agents day8-goc
 cd lab9
 git switch -c starter/d09

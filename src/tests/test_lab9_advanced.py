@@ -74,3 +74,21 @@ def test_slice_check_blocks_a_slice_below_floor():
     spec = dict(SPEC, slices=[{"name": "denial", "metric": "pass_rate", "min": 0.9, "blocking": True}])
     blocked, _ = gate.slice_check(_report(rows, {"pass_rate": 0.75}), base, spec)
     assert blocked == ["slice:denial/pass_rate"]
+
+
+@pytest.mark.parametrize("change", ["duplicate", "evaluator_failure", "slice_relabel", "missing_score"])
+def test_integrity_blocks_invalid_green_report(change):
+    from lab9.gate import integrity_check
+
+    base = _report(copy.deepcopy(ROWS), {"pass_rate": 1.0})
+    pr = copy.deepcopy(base)
+    if change == "duplicate":
+        pr["rows"].append(copy.deepcopy(pr["rows"][0]))
+    elif change == "evaluator_failure":
+        pr["evaluator_failures"].append("broken grader")
+    elif change == "slice_relabel":
+        for row in pr["rows"]:
+            row["slices"] = []
+    else:
+        pr["rows"][0]["pass_rate"] = None
+    assert integrity_check(pr, base, SPEC)
